@@ -1,0 +1,40 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet", href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+  <div id="navbar">
+    <a href="/posts/"><img src="https://as1.ftcdn.net/v2/jpg/04/10/03/44/1000_F_410034499_ZPhVBDgNVG5H35YN1u4XdSZfMOpKCWPc.jpg" style="width: 40px; height: auto;"></a><span style="font-weight:bold">{{post.title}}</span>
+    <a href="/posts/add/" class="btn btn-primary">Add post</a>
+  </div>
+
+  <div id="post-detail">
+    <div style="text-align: center;">
+    <p style="text-align: center; font-weight: bold; font-size: 20px;"> {{post.content|linebreaksbr}}</p>
+    {% if post.thumbnail %}
+      <a href="{{ post.link_url }}"> <img src="{{ post.thumbnail.url }}" alt="" style="width: 500px; height: 200;"></a>
+      <p>--사진 누르면 링크연결--</p>
+    {% else %}
+      <p></p>
+    {% endif %}
+    </div>
+    <br>
+    <br>
+
+    <div style="text-align: left;">
+    <p>-----댓글-----</p>
+    <ul class="comments">
+      {% for comment in post.comment_set.all %}
+        <li class="comment">{{comment.content}}</li>
+      {% empty %}
+        <li class="comment-empty">아직 댓글이 없습니다.</li>
+      {% endfor %}
+    </ul>
+    </div>
+
+  </div>
+</body>
+</html>

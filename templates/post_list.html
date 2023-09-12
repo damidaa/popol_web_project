@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .post-image img {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: cover;
+        }
+
+        .post {
+            overflow: hidden; /* 부모 요소의 크기를 자식 요소에 맞추기 위해 오버플로우를 숨김 */
+        }
+
+        .post-content {
+            float: left; /* 텍스트를 왼쪽으로 부유(floating) */
+            width: 70%; /* 텍스트 영역의 너비를 조절 (이미지 너비를 기준으로 조정) */
+            margin-right: 20px; /* 텍스트와 이미지 사이의 간격 조절 */
+        }
+
+        .post-image {
+            float: right; /* 이미지를 오른쪽으로 부유(floating) */
+            width: 30%; /* 이미지 영역의 너비를 조절 (텍스트 너비를 기준으로 조정) */
+        }
+    </style>
+</head>
+<body>
+    <div id='navbar'>
+        <a href="/posts/"><img src="https://as1.ftcdn.net/v2/jpg/04/10/03/44/1000_F_410034499_ZPhVBDgNVG5H35YN1u4XdSZfMOpKCWPc.jpg" style="width: 40px; height: auto;"><span style="font-weight: bold; font-size: 40px;">ANU log</span></a>
+        <a href="/posts/add/" class="btn btn-primary">Add post</a>
+    </div>
+    <div id="post-list">
+        <ul class="posts">
+            {% for post in posts %}
+                <li class="post">
+                    <div class="post-content">
+                        <a style="font-weight: bold; font-size: 20px;" href="/posts/{{post.id}}/"> {{post.title}}</a>
+                        <p>{{post.content}}</p>
+                        <ul class="comments">
+                            {% with comment_count=post.comment_set.count %}
+                                {% if comment_count > 0 %}
+                                    <li class="comment">{{ comment_count }}개의 댓글</li>
+                                {% else %}
+                                    <li class="comment-empty">아직 댓글이 없습니다.</li>
+                                {% endif %}
+                            {% endwith %}
+                        </ul>
+                    </div>
+                    <div class="post-image">
+                        {% if post.thumbnail %}
+                            <a href="{{ post.link_url }}"> <img src="{{ post.thumbnail.url }}" alt=""></a>
+                        {% else %}
+                            <img src="" alt="noimage">
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
